@@ -1,0 +1,21 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Source control
+.git
+.gitignore
+
+# Build output
+dist
+
+# Environment files
+.env*
+
+# Development files
+README.md
+Dockerfile
+.dockerignore
+*.config.js
+test
+coverage
