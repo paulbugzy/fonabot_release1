@@ -19,11 +19,12 @@ dist-ssr
 .env.development
 .env.production
 
-# Nginx configuration (if you decide to always ignore it from this path)
+# Nginx configuration
 fonabot-frontend/nginx.conf
 
-# Backup directory and its contents
+# Extra directories
 fonabot-frontend/.backups/
+systemmd-services/
 
 # Editor directories and files
 .vscode/*
