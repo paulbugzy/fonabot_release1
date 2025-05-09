@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import styled from '@emotion/styled';
-import { theme } from '../../styles/theme';
-import { CallLogFilters } from '../../services/callLogService';
+import { useState } from "react";
+import styled from "@emotion/styled";
+import { theme } from "../../styles/theme";
+import type { CallLogFilters } from "../../services/callLogService";
 
 const Panel = styled.div`
   background: white;
@@ -61,7 +61,10 @@ interface CallLogFiltersPanelProps {
   onFiltersChange: (filters: CallLogFilters) => void;
 }
 
-export const CallLogFiltersPanel = ({ filters, onFiltersChange }: CallLogFiltersPanelProps) => {
+export const CallLogFiltersPanel = ({
+  filters,
+  onFiltersChange
+}: CallLogFiltersPanelProps) => {
   const [formData, setFormData] = useState(filters);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -76,11 +79,13 @@ export const CallLogFiltersPanel = ({ filters, onFiltersChange }: CallLogFilters
           <Label>Start Date</Label>
           <Input
             type="date"
-            value={formData.startDate?.toISOString().split('T')[0] || ''}
-            onChange={e => setFormData({
-              ...formData,
-              startDate: e.target.value ? new Date(e.target.value) : undefined
-            })}
+            value={formData.startDate?.toISOString().split("T")[0] || ""}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                startDate: e.target.value ? new Date(e.target.value) : undefined
+              })
+            }
           />
         </Field>
 
@@ -88,22 +93,26 @@ export const CallLogFiltersPanel = ({ filters, onFiltersChange }: CallLogFilters
           <Label>End Date</Label>
           <Input
             type="date"
-            value={formData.endDate?.toISOString().split('T')[0] || ''}
-            onChange={e => setFormData({
-              ...formData,
-              endDate: e.target.value ? new Date(e.target.value) : undefined
-            })}
+            value={formData.endDate?.toISOString().split("T")[0] || ""}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                endDate: e.target.value ? new Date(e.target.value) : undefined
+              })
+            }
           />
         </Field>
 
         <Field>
           <Label>Status</Label>
           <Select
-            value={formData.status || ''}
-            onChange={e => setFormData({
-              ...formData,
-              status: e.target.value || undefined
-            })}
+            value={formData.status || ""}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                status: e.target.value || undefined
+              })
+            }
           >
             <option value="">All</option>
             <option value="completed">Completed</option>
@@ -118,11 +127,13 @@ export const CallLogFiltersPanel = ({ filters, onFiltersChange }: CallLogFilters
           <Input
             type="text"
             placeholder="+1234567890"
-            value={formData.phoneNumber || ''}
-            onChange={e => setFormData({
-              ...formData,
-              phoneNumber: e.target.value || undefined
-            })}
+            value={formData.phoneNumber || ""}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                phoneNumber: e.target.value || undefined
+              })
+            }
           />
         </Field>
 

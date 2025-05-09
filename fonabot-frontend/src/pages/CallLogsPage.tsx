@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
-import { format } from 'date-fns';
-import { theme } from '../styles/theme';
-import { callLogService, CallLog, CallLogFilters } from '../services/callLogService';
-import { CallLogEventModal } from '../components/call-logs/CallLogEventModal';
-import { CallLogFiltersPanel } from '../components/call-logs/CallLogFiltersPanel';
+import { useState, useEffect } from "react";
+import styled from "@emotion/styled";
+import { format } from "date-fns";
+import { theme } from "../styles/theme";
+import { callLogService } from "../services/callLogService";
+import type { CallLog, CallLogFilters } from "../services/callLogService";
+import { CallLogEventModal } from "../components/call-logs/CallLogEventModal";
+import { CallLogFiltersPanel } from "../components/call-logs/CallLogFiltersPanel";
 
 const Container = styled.div`
   padding: ${theme.spacing.lg};
@@ -53,15 +54,16 @@ const Pagination = styled.div`
 `;
 
 const PageButton = styled.button<{ $active?: boolean }>`
-  background: ${props => props.$active ? theme.colors.primary : 'white'};
-  color: ${props => props.$active ? 'white' : theme.colors.text};
+  background: ${(props) => (props.$active ? theme.colors.primary : "white")};
+  color: ${(props) => (props.$active ? "white" : theme.colors.text)};
   border: 1px solid ${theme.colors.background};
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   border-radius: 4px;
   cursor: pointer;
 
   &:hover {
-    background: ${props => props.$active ? theme.colors.primary : theme.colors.background};
+    background: ${(props) =>
+      props.$active ? theme.colors.primary : theme.colors.background};
   }
 `;
 
@@ -71,7 +73,7 @@ export const CallLogsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCallLog, setSelectedCallLog] = useState<CallLog | null>(null);
   const [filters, setFilters] = useState<CallLogFilters>({});
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const ITEMS_PER_PAGE = 10;
 
@@ -81,14 +83,18 @@ export const CallLogsPage = () => {
 
   const loadCallLogs = async () => {
     try {
-      setLoading(true);
-      const { items, total } = await callLogService.getCallLogs(filters, currentPage, ITEMS_PER_PAGE);
+      setIsLoading(true);
+      const { items, total } = await callLogService.getCallLogs(
+        filters,
+        currentPage,
+        ITEMS_PER_PAGE
+      );
       setCallLogs(items);
       setTotalCalls(total);
     } catch (error) {
-      console.error('Failed to load call logs:', error);
+      console.error("Failed to load call logs:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -96,12 +102,10 @@ export const CallLogsPage = () => {
 
   return (
     <Container>
+      {isLoading && <div>Loading...</div>}
       <h1>Call Logs</h1>
 
-      <CallLogFiltersPanel
-        filters={filters}
-        onFiltersChange={setFilters}
-      />
+      <CallLogFiltersPanel filters={filters} onFiltersChange={setFilters} />
 
       <Table>
         <thead>
@@ -117,15 +121,15 @@ export const CallLogsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {callLogs.map(log => (
+          {callLogs.map((log) => (
             <tr key={log.id}>
               <Td>{log.phoneNumberFrom}</Td>
               <Td>{log.phoneNumberTo}</Td>
               <Td>{log.ivrFlow.name}</Td>
-              <Td>{format(new Date(log.startTime), 'MMM d, yyyy HH:mm:ss')}</Td>
-              <Td>{log.durationSeconds ? `${log.durationSeconds}s` : '-'}</Td>
+              <Td>{format(new Date(log.startTime), "MMM d, yyyy HH:mm:ss")}</Td>
+              <Td>{log.durationSeconds ? `${log.durationSeconds}s` : "-"}</Td>
               <Td>{log.status}</Td>
-              <Td>{log.cost ? `$${log.cost.toFixed(2)}` : '-'}</Td>
+              <Td>{log.cost ? `$${log.cost.toFixed(2)}` : "-"}</Td>
               <Td>
                 <ViewEventsButton onClick={() => setSelectedCallLog(log)}>
                   View Events

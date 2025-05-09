@@ -5,9 +5,12 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { IvrFlowListPage } from './pages/IvrFlowListPage';
-import { IvrFlowBuilderPage } from './pages/IvrFlowBuilderPage';
+import IvrFlowBuilderPage from './pages/IvrFlowBuilderPage';
 import { LiveDashboardPage } from './pages/LiveDashboardPage';
 import { CallLogsPage } from './pages/CallLogsPage';
+import { PhoneNumbersPage } from './components/PhoneNumbersPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { SettingsPage } from './pages/SettingsPage';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { MainContentLayout } from './components/layout/MainContentLayout';
@@ -42,7 +45,7 @@ function App() {
                   <Navbar />
                   <Sidebar />
                   <MainContentLayout>
-                    <div>Dashboard</div>
+                    <DashboardPage />
                   </MainContentLayout>
                 </>
               </ProtectedRoute>
@@ -105,6 +108,20 @@ function App() {
             }
           />
           <Route
+            path="/numbers"
+            element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <Sidebar />
+                  <MainContentLayout>
+                    <PhoneNumbersPage />
+                  </MainContentLayout>
+                </>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/settings"
             element={
               <ProtectedRoute>
@@ -112,7 +129,7 @@ function App() {
                   <Navbar />
                   <Sidebar />
                   <MainContentLayout>
-                    <div>Settings</div>
+                    <SettingsPage />
                   </MainContentLayout>
                 </>
               </ProtectedRoute>

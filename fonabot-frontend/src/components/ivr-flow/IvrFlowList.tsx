@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { theme } from '../../styles/theme';
-import { IvrFlow } from '../../types/ivr-flow';
-import { ivrFlowService } from '../../services/ivrFlowService';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import styled from "@emotion/styled";
+import { theme } from "../../styles/theme";
+import type { IvrFlow } from "../../types/ivrFlow";
+import { ivrFlowService } from "../../services/ivrFlowService";
+import { CreateFlowModal } from "./CreateFlowModal";
 
 const Container = styled.div`
   padding: ${theme.spacing.lg};
@@ -22,7 +23,7 @@ const CreateButton = styled(Link)`
   padding: ${theme.spacing.sm} ${theme.spacing.lg};
   border-radius: 4px;
   text-decoration: none;
-  
+
   &:hover {
     background-color: #4338ca;
   }
@@ -63,12 +64,12 @@ const ActionButton = styled(Link)`
   border-radius: 4px;
   text-decoration: none;
   font-size: 0.9rem;
-  
+
   &.edit {
     background-color: ${theme.colors.primary};
     color: white;
   }
-  
+
   &.delete {
     background-color: ${theme.colors.error};
     color: white;
@@ -77,6 +78,7 @@ const ActionButton = styled(Link)`
 
 export const IvrFlowList = () => {
   const [flows, setFlows] = useState<IvrFlow[]>([]);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -90,22 +92,22 @@ export const IvrFlowList = () => {
       setFlows(data);
       setError(null);
     } catch (err) {
-      setError('Failed to load IVR flows');
+      setError("Failed to load IVR flows");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this flow?')) {
+    if (!window.confirm("Are you sure you want to delete this flow?")) {
       return;
     }
 
     try {
       await ivrFlowService.deleteFlow(id);
-      setFlows(flows.filter(flow => flow.id !== id));
+      setFlows(flows.filter((flow) => flow.id !== id));
     } catch (err) {
-      setError('Failed to delete flow');
+      setError("Failed to delete flow");
     }
   };
 
@@ -116,15 +118,25 @@ export const IvrFlowList = () => {
     <Container>
       <Header>
         <h1>IVR Flows</h1>
-        <CreateButton to="/flows/new">Create New Flow</CreateButton>
+        <CreateButton
+          to="#"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowCreateModal(true);
+          }}
+        >
+          Create New Flow
+        </CreateButton>
       </Header>
 
       <FlowGrid>
-        {flows.map(flow => (
+        {flows.map((flow) => (
           <FlowCard key={flow.id}>
             <FlowName>{flow.name}</FlowName>
-            <FlowDescription>{flow.description || 'No description'}</FlowDescription>
-            <div>Status: {flow.isActive ? 'Active' : 'Inactive'}</div>
+            <FlowDescription>
+              {flow.description || "No description"}
+            </FlowDescription>
+            <div>Status: {flow.isActive ? "Active" : "Inactive"}</div>
             {flow.trigger_phone_number && (
               <div>Phone: {flow.trigger_phone_number}</div>
             )}
@@ -146,6 +158,10 @@ export const IvrFlowList = () => {
           </FlowCard>
         ))}
       </FlowGrid>
+
+      {showCreateModal && (
+        <CreateFlowModal onClose={() => setShowCreateModal(false)} />
+      )}
     </Container>
   );
 };

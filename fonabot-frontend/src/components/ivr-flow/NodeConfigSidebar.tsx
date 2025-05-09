@@ -1,14 +1,15 @@
-import styled from '@emotion/styled';
-import { Node } from '@xyflow/react';
-import { theme } from '../../styles/theme';
-import { NodeData, NodeType } from './nodes/types';
-import { PlayMessageConfig } from './node-configs/PlayMessageConfig';
-import { GetInputConfig } from './node-configs/GetInputConfig';
-import { TransferConfig } from './node-configs/TransferConfig';
-import { ConditionConfig } from './node-configs/ConditionConfig';
-import { WebhookConfig } from './node-configs/WebhookConfig';
-import { SetVariableConfig } from './node-configs/SetVariableConfig';
-import { AIRoutineConfig } from './node-configs/AIRoutineConfig';
+import styled from "@emotion/styled";
+import type { Node } from "@xyflow/react";
+import { theme } from "../../styles/theme";
+import type { NodeData, NodeType } from "./nodes/types";
+import { PlayMessageConfig } from "./node-configs/PlayMessageConfig";
+import { GetInputConfig } from "./node-configs/GetInputConfig";
+import { TransferConfig } from "./node-configs/TransferConfig";
+import { ConditionConfig } from "./node-configs/ConditionConfig";
+import { WebhookConfig } from "./node-configs/WebhookConfig";
+import { SetVariableConfig } from "./node-configs/SetVariableConfig";
+import { AIRoutineConfig } from "./node-configs/AIRoutineConfig";
+import { HangupConfig } from "./node-configs/HangupConfig";
 
 const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -17,9 +18,9 @@ const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   bottom: 0;
   width: 300px;
   background: white;
-  border-left: 1px solid #E5E7EB;
+  border-left: 1px solid #e5e7eb;
   padding: ${theme.spacing.lg};
-  transform: translateX(${props => props.$isOpen ? '0' : '100%'});
+  transform: translateX(${(props) => (props.$isOpen ? "0" : "100%")});
   transition: transform 0.3s ease;
   overflow-y: auto;
 `;
@@ -32,7 +33,7 @@ const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   color: ${theme.colors.text};
-  
+
   &:hover {
     color: ${theme.colors.primary};
   }
@@ -44,29 +45,35 @@ interface NodeConfigSidebarProps {
   onNodeUpdate: (nodeId: string, data: NodeData) => void;
 }
 
-export const NodeConfigSidebar = ({ selectedNode, onClose, onNodeUpdate }: NodeConfigSidebarProps) => {
+export const NodeConfigSidebar = ({
+  selectedNode,
+  onClose,
+  onNodeUpdate
+}: NodeConfigSidebarProps) => {
   const renderConfig = () => {
     if (!selectedNode) return null;
 
     const props = {
       data: selectedNode.data,
-      onChange: (newData: NodeData) => onNodeUpdate(selectedNode.id, newData),
+      onChange: (newData: NodeData) => onNodeUpdate(selectedNode.id, newData)
     };
 
     switch (selectedNode.type as NodeType) {
-      case 'PlayMessageNodeFonaBot':
+      case "PlayMessageNodeFonaBot":
         return <PlayMessageConfig {...props} />;
-      case 'GetInputNodeFonaBot':
+      case "GetInputNodeFonaBot":
         return <GetInputConfig {...props} />;
-      case 'TransferNodeFonaBot':
+      case "TransferNodeFonaBot":
         return <TransferConfig {...props} />;
-      case 'ConditionNodeFonaBot':
+      case "HangupNodeFonaBot":
+        return <HangupConfig {...props} />;
+      case "ConditionNodeFonaBot":
         return <ConditionConfig {...props} />;
-      case 'WebhookNodeFonaBot':
+      case "WebhookNodeFonaBot":
         return <WebhookConfig {...props} />;
-      case 'SetVariableNodeFonaBot':
+      case "SetVariableNodeFonaBot":
         return <SetVariableConfig {...props} />;
-      case 'AIRoutineNodeFonaBot':
+      case "AIRoutineNodeFonaBot":
         return <AIRoutineConfig {...props} />;
       default:
         return <div>No configuration available for this node type.</div>;
@@ -76,7 +83,9 @@ export const NodeConfigSidebar = ({ selectedNode, onClose, onNodeUpdate }: NodeC
   return (
     <SidebarContainer $isOpen={!!selectedNode}>
       <CloseButton onClick={onClose}>×</CloseButton>
-      <h2>{selectedNode?.type.replace('FonaBot', '')}</h2>
+      <h2>
+        {selectedNode?.type ? selectedNode.type.replace("FonaBot", "") : ""}
+      </h2>
       {renderConfig()}
     </SidebarContainer>
   );

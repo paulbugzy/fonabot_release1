@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
-import { format } from 'date-fns';
-import { theme } from '../../styles/theme';
-import { CallLog, CallLogEvent, callLogService } from '../../services/callLogService';
+import { useState, useEffect } from "react";
+import styled from "@emotion/styled";
+import { format } from "date-fns";
+import { theme } from "../../styles/theme";
+import type { CallLog, CallLogEvent } from "../../services/callLogService";
+import { callLogService } from "../../services/callLogService";
 
 const Overlay = styled.div`
   position: fixed;
@@ -40,7 +41,7 @@ const CloseButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   color: ${theme.colors.secondary};
-  
+
   &:hover {
     color: ${theme.colors.text};
   }
@@ -88,9 +89,12 @@ interface CallLogEventModalProps {
   onClose: () => void;
 }
 
-export const CallLogEventModal = ({ callLog, onClose }: CallLogEventModalProps) => {
+export const CallLogEventModal = ({
+  callLog,
+  onClose
+}: CallLogEventModalProps) => {
   const [events, setEvents] = useState<CallLogEvent[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     loadEvents();
@@ -98,21 +102,21 @@ export const CallLogEventModal = ({ callLog, onClose }: CallLogEventModalProps) 
 
   const loadEvents = async () => {
     try {
-      setLoading(true);
+      setIsLoading(true);
       const events = await callLogService.getCallLogEvents(callLog.id);
       setEvents(events);
     } catch (error) {
-      console.error('Failed to load call events:', error);
+      console.error("Failed to load call events:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
     <Overlay onClick={onClose}>
-      <Modal onClick={e => e.stopPropagation()}>
+      <Modal onClick={(e) => e.stopPropagation()}>
         <Header>
-          <h2>Call Events</h2>
+          <h2>Call Events {isLoading && "(Loading...)"}</h2>
           <CloseButton onClick={onClose}>&times;</CloseButton>
         </Header>
 
@@ -123,15 +127,18 @@ export const CallLogEventModal = ({ callLog, onClose }: CallLogEventModalProps) 
         </div>
 
         <EventList>
-          {events.map(event => (
+          {events.map((event) => (
             <EventItem key={event.id}>
               <EventHeader>
                 <EventType>
-                  {event.nodeType ? `${event.nodeType} - ` : ''}
+                  {event.nodeType ? `${event.nodeType} - ` : ""}
                   {event.eventType}
                 </EventType>
                 <EventTimestamp>
-                  {format(new Date(event.eventTimestamp), 'MMM d, yyyy HH:mm:ss')}
+                  {format(
+                    new Date(event.eventTimestamp),
+                    "MMM d, yyyy HH:mm:ss"
+                  )}
                 </EventTimestamp>
               </EventHeader>
               <EventDetails>

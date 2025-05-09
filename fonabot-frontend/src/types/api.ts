@@ -6,10 +6,8 @@ export interface ApiError {
   path?: string;
 }
 
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-}
+// The API directly returns the data without wrapping it
+export type ApiResponse<T> = T;
 
 export interface PaginatedResponse<T> {
   items: T[];

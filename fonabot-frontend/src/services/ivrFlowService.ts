@@ -1,28 +1,24 @@
-import { apiService } from './apiService';
-import { IvrFlow } from '../types/ivr-flow';
+import { apiService } from "./apiService";
+import type { IvrFlow } from "../types/ivrFlow";
 
 export const ivrFlowService = {
   async getFlows(): Promise<IvrFlow[]> {
-    const response = await apiService.get<IvrFlow[]>('/ivr-flows');
-    return response.data;
+    return apiService.get<IvrFlow[]>("/ivr-flows");
   },
 
   async getFlow(id: string): Promise<IvrFlow> {
-    const response = await apiService.get<IvrFlow>(`/ivr-flows/${id}`);
-    return response.data;
+    return apiService.get<IvrFlow>(`/ivr-flows/${id}`);
   },
 
   async createFlow(data: Partial<IvrFlow>): Promise<IvrFlow> {
-    const response = await apiService.post<IvrFlow>('/ivr-flows', data);
-    return response.data;
+    return apiService.post<IvrFlow>("/ivr-flows", data);
   },
 
   async updateFlow(id: string, data: Partial<IvrFlow>): Promise<IvrFlow> {
-    const response = await apiService.put<IvrFlow>(`/ivr-flows/${id}`, data);
-    return response.data;
+    return apiService.put<IvrFlow>(`/ivr-flows/${id}`, data);
   },
 
   async deleteFlow(id: string): Promise<void> {
-    await apiService.delete(`/ivr-flows/${id}`);
-  },
+    return apiService.delete(`/ivr-flows/${id}`);
+  }
 };

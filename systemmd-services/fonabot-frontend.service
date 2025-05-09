@@ -1,0 +1,17 @@
+[Unit]
+Description=FonaBot Frontend Service
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/fonabot_release1/fonabot-frontend
+ExecStart=/usr/bin/npm run preview -- --host --port 5173
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=fonabot-frontend
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

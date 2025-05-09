@@ -8,3 +8,5 @@ import { ExternalApiCredential } from '../entities/external-api-credential.entit
   providers: [CredentialsService],
   exports: [CredentialsService],
 })
+
+export class CredentialsModule {}

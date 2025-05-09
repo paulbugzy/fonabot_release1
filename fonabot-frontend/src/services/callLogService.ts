@@ -13,7 +13,6 @@ export interface CallLog {
   durationSeconds?: number;
   status: string;
   cost?: number;
-  events: CallLogEvent[];
 }
 
 export interface CallLogEvent {
@@ -50,12 +49,10 @@ export const callLogService = {
       params.append('phoneNumber', filters.phoneNumber);
     }
 
-    const response = await apiService.get<{ items: CallLog[]; total: number }>(`/call-logs?${params}`);
-    return response.data;
+    return apiService.get<{ items: CallLog[]; total: number }>(`/call-logs?${params}`);
   },
 
   async getCallLogEvents(callLogId: string): Promise<CallLogEvent[]> {
-    const response = await apiService.get<CallLogEvent[]>(`/call-logs/${callLogId}/events`);
-    return response.data;
+    return apiService.get<CallLogEvent[]>(`/call-logs/${callLogId}/events`);
   },
 };

@@ -1,8 +1,9 @@
-import { useState, FormEvent } from 'react';
-import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { theme } from '../../styles/theme';
+import { useState } from "react";
+import type { FormEvent } from "react";
+import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { theme } from "../../styles/theme";
 
 const Form = styled.form`
   max-width: 400px;
@@ -45,21 +46,23 @@ const ErrorMessage = styled.div`
 `;
 
 export const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     try {
+      console.log("Attempting login with:", { email });
       await login(email, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError('Invalid email or password');
+      console.error("Login form error:", err);
+      setError("Invalid email or password");
     }
   };
 

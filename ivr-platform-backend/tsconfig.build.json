@@ -1,4 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "fonabot-frontend"] // Explicitly exclude frontend
+  // You might only need "exclude": ["node_modules", "dist"] if tsconfig.json handles the rest
 }

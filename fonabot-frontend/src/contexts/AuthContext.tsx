@@ -1,14 +1,18 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { apiService } from '../services/apiService';
+import { createContext, useContext, useState, useEffect } from "react";
+import type { ReactNode } from "react";
+import { apiService } from "../services/apiService";
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+  };
+}
 
 interface User {
   id: string;
   email: string;
-}
-
-interface LoginResponse {
-  user: User;
-  token: string;
 }
 
 interface AuthContextType {
@@ -25,35 +29,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing session
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    try {
-      // Implement session check logic
+    // Check for existing token and validate it
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      // In a real app, you would validate the token with the server
+      // For now, we'll just set loading to false
       setLoading(false);
-    } catch (error) {
+    } else {
       setLoading(false);
     }
-  };
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await apiService.post<LoginResponse>('/auth/login', {
-        email,
-        password,
-      });
-      
-      localStorage.setItem('auth_token', response.data.token);
-      setUser(response.data.user);
+      const response = (await apiService.post("/auth/login", {
+        email: email,
+        password: password
+      })) as LoginResponse;
+
+      // Store the token and user data
+      localStorage.setItem("auth_token", response.token);
+      setUser(response.user);
     } catch (error) {
-      throw new Error('Login failed');
+      console.error("Login error:", error);
+      throw new Error("Login failed");
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem("auth_token");
     setUser(null);
   };
 
@@ -67,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
