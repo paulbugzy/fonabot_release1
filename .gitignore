@@ -7,14 +7,23 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Build output directory
+dist/
+
 node_modules
-dist
 dist-ssr
 *.local
 .env
+.env.*
 .env.local
 .env.development
 .env.production
+
+# Nginx configuration (if you decide to always ignore it from this path)
+fonabot-frontend/nginx.conf
+
+# Backup directory and its contents
+fonabot-frontend/.backups/
 
 # Editor directories and files
 .vscode/*
