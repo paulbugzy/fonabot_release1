@@ -29,7 +29,7 @@ sudo ufw allow from 172.26.15.172 to any port 6379
 sudo ufw --force enable
 
 # Deploy backend
-cd /home/ubuntu/fonabot_release1/ivr-platform-backend
+cd /home/ubuntu/fonabot_release1/fonabot-backend
 npm install
 npm run build
 sudo systemctl start fonabot-backend

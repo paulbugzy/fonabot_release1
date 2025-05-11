@@ -1,7 +1,10 @@
 {
   "name": "fonabot-frontend",
+  "version": "1.0.0",
+  "description": "FonaBot.com Frontend",
+  "author": "Paul Youhanna",
   "private": true,
-  "version": "0.0.0",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,6 +16,9 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/typeorm": "^11.0.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-tabs": "^1.0.4",
@@ -24,7 +30,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.1",
-    "socket.io-client": "^4.7.2"
+    "socket.io-client": "^4.7.2",
+    "typeorm": "^0.3.23"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
